@@ -95,3 +95,15 @@ We use RwLock<Vec<Notification>> because multiple threads may want to read the l
 Unlike Java, Rust enforces strict ownership and borrowing rules to prevent data races and undefined behavior at compile time. It doesn’t allow freely mutating a static variable because it must guarantee thread safety. The lazy_static crate provides a safe way to define and initialize static data at runtime, but we still have to wrap it with concurrency primitives (like RwLock) to ensure only safe, synchronized mutation can occur.
 
 #### Reflection Subscriber-2
+
+1. Have you explored things outside of the steps in the tutorial, for example: src/lib.rs? If not, explain why you did not do so. If yes, explain things that you have learned from those other parts of code.
+
+I mainly followed the given steps and didn’t explore much outside of them, like src/lib.rs, because I was focused on getting the tutorial flow correct first. That said, I did glance at `lib.rs` briefly to see how the crate was being set up, and I noticed it contained some basic configuration and imports for Rocket. This helped me understand how the application wires everything together, but I didn’t need to modify it since the tutorial already provided a structured path to follow.
+
+2. Since you have completed the tutorial by now and have tried to test your notification system by spawning multiple instances of Receiver, explain how Observer pattern eases you to plug in more subscribers. How about spawning more than one instance of Main app, will it still be easy enough to add to the system?
+
+The Observer pattern makes it straightforward to add more subscribers because each new receiver instance simply subscribes to the publisher and gets notifications without needing to modify the publisher code. If I wanted to spawn multiple Main apps, I’d need to ensure they have unique addresses or ports, but they could still use the same subscription logic. It’s a bit more work to coordinate multiple Main apps, but as long as each Main app follows the same notification interface, plugging them in would still be manageable thanks to the Observer pattern’s decoupled design.
+
+3. Have you tried to make your own Tests, or enhance documentation on your Postman collection? If you have tried those features, tell us whether it is useful for your work (it can be your tutorial work or your Group Project).
+
+I’ve experimented with writing a few small tests for the endpoints and also added some descriptions in the Postman collection to clarify what each request does. This was definitely helpful in catching mistakes early, especially when verifying that each receiver instance was actually getting notifications. Documenting the requests in Postman also made it easier to share the endpoints with teammates, so they could quickly understand and test the workflow without digging through code.
